@@ -1,7 +1,7 @@
 export const userService = {
   async salvar(dados: any) {
       try {
-          const response = await fetch(`${process.env.api}/users`, {
+          const response = await fetch(`http://localhost:3333/users`, {
               method: 'POST',
               body: JSON.stringify(dados),
               headers: {
