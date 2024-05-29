@@ -3,7 +3,7 @@ import { userService } from "@/app/services/user-service";
 import { useState } from "react";
 import validator from 'validator';
 import { passwordGuidelines } from "../utils/mock"
-
+import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 export default function Home() {
 
   const [isStrongPassword, setIsStrongPassword] = useState(false);
@@ -151,13 +151,14 @@ export default function Home() {
             onChange={handleInput}
             required
           />
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-slate-400">
+          <div id='passwordBar' className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-slate-400">
             <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: passwordPoints + '%' }}></div>
           </div>
-          <div className="flex flex-col  my-2 ">
+          <div id='passwordGuidelines' className="flex flex-col my-2 ">
             <ul className="border-2 border-black rounded-md p-2">
               {passwordGuidelines.map((guidelines) => {
                 let textColor = 'text-green-700';
+                let icon = faCircleCheck;
                 // verifica as guidelines de acordo com o id e retorna com a cor correta se o input está de acordo
                 if (
                   (guidelines.id === 'minLength' && !hasMinLength) ||
@@ -165,9 +166,11 @@ export default function Home() {
                   (guidelines.id === 'lowerUpperCase' && (!hasLowerCase || !hasUpperCase))
                 ) {
                   textColor = 'text-red-700';
+                  icon = faCircleXmark
                 }
                 return (
                   <li key={guidelines.id}>
+                    <FontAwesomeIcon className={`${textColor} mr-1`} icon={icon} />
                     <small className={textColor}>{guidelines.text}</small>
                   </li>
                 );
