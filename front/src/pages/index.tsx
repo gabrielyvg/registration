@@ -143,8 +143,8 @@ export default function Home() {
             required
           />
           <small className="ml-2 text-red-700">{!isEmail ? 'Invalid E-mail' : ''}</small>
-          <label className="relative mb-2">
-            <input className="border-2 border-black rounded-lg p-2 mb-2"
+          <label className="relative">
+            <input className="border-2 border-black rounded-lg p-2 mb-1"
               placeholder="Password"
               type={showPassword ? "text" : "password"}
               name="password"
