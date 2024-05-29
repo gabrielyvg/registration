@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { userService } from "@/app/services/user-service";
 import { useState } from "react";
 import validator from 'validator';
+import { passwordGuidelines } from "../utils/mock"
 
 export default function Home() {
 
@@ -150,19 +152,26 @@ export default function Home() {
             required
           />
           <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-slate-400">
-            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: passwordPoints + '%'}}></div>
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: passwordPoints + '%' }}></div>
           </div>
           <div className="flex flex-col  my-2 ">
             <ul className="border-2 border-black rounded-md p-2">
-            <li>
-                <small className={`${!hasMinLength ? 'text-red-700' : 'text-green-700'}`}>Minímo 6 caracteres</small>
-              </li>
-              <li>
-                <small className={`${!hasNumbers ? 'text-red-700' : 'text-green-700'}`}>Número (0-9)</small>
-              </li>
-              <li>
-                <small className={`${!hasUpperCase || !hasLowerCase ? 'text-red-700' : 'text-green-700'}`}>Letra maiúscula e minúscula</small>
-              </li>
+              {passwordGuidelines.map((guidelines) => {
+                let textColor = 'text-green-700';
+                // verifica as guidelines de acordo com o id e retorna com a cor correta se o input está de acordo
+                if (
+                  (guidelines.id === 'minLength' && !hasMinLength) ||
+                  (guidelines.id === 'numbers' && !hasNumbers) ||
+                  (guidelines.id === 'lowerUpperCase' && (!hasLowerCase || !hasUpperCase))
+                ) {
+                  textColor = 'text-red-700';
+                }
+                return (
+                  <li key={guidelines.id}>
+                    <small className={textColor}>{guidelines.text}</small>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <button className="bg-indigo-400 
