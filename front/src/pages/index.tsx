@@ -140,9 +140,7 @@ export default function Home() {
           />
           <small className="ml-2 text-red-700">{!isEmail ? 'Invalid E-mail' : ''}</small>
 
-          <input className={`border-2 rounded-lg p-2 mb-2 
-                            ${!isStrongPassword ? 'focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500' : 'border-black'}
-                          `}
+          <input className="border-2 border-black rounded-lg p-2 mb-2"
             placeholder="Password"
             type="password"
             name="password"
@@ -152,21 +150,18 @@ export default function Home() {
             required
           />
           <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-slate-400">
-            <div className="bg-blue-600 h-2.5 rounded-full w-7" ></div>
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: passwordPoints + '%'}}></div>
           </div>
           <div className="flex flex-col  my-2 ">
             <ul className="border-2 border-black rounded-md p-2">
             <li>
-                <small className={`${!hasMinLength ? 'text-red-700' : 'text-green-700'}`}>Precisa ter no minímo 6 caracteres</small>
+                <small className={`${!hasMinLength ? 'text-red-700' : 'text-green-700'}`}>Minímo 6 caracteres</small>
               </li>
               <li>
-                <small className={`${!hasNumbers ? 'text-red-700' : 'text-green-700'}`}>Precisa ter um número</small>
+                <small className={`${!hasNumbers ? 'text-red-700' : 'text-green-700'}`}>Número (0-9)</small>
               </li>
               <li>
-                <small className={`${!hasUpperCase ? 'text-red-700' : 'text-green-700'}`}>Precisa ter uma letra maiúscula</small>
-              </li>
-              <li>
-                <small className={`${!hasLowerCase ? 'text-red-700' : 'text-green-700'}`}>Precisa ter uma letra minuscula</small>
+                <small className={`${!hasUpperCase || !hasLowerCase ? 'text-red-700' : 'text-green-700'}`}>Letra maiúscula e minúscula</small>
               </li>
             </ul>
           </div>
