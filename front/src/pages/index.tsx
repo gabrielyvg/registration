@@ -5,6 +5,11 @@ import validator from 'validator';
 export default function Home() {
 
   const [isStrongPassword, setIsStrongPassword] = useState(false);
+  const [passwordPoints, setPasswordPoints] = useState(0);
+  const [hasUpperCase, setHasUpperCase] = useState(false);
+  const [hasLowerCase, setHasLowerCase] = useState(false);
+  const [hasNumbers, setHasNumbers] = useState(false);
+  const [hasMinLength, setHasMinLength] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [dadosFormulario, setDadosFormulario] = useState({
     name: '',
@@ -12,12 +17,14 @@ export default function Home() {
     password: '',
   });
 
+
   const handleInput = (e: any) => {
     const fieldName = e.target.name;
     const fieldValue = e.target.value;
 
     if (fieldName === 'password') {
-      validatePassword(fieldValue);
+      validatePasswordPoints(fieldValue);
+      validatePasswordStrength(fieldValue);
     }
 
     if (fieldName === 'email') {
@@ -36,15 +43,57 @@ export default function Home() {
     }
   }
 
-  const validatePassword = (password: string) => {
-    if (validator.isStrongPassword(password, {
+  const validatePasswordPoints = (password: string) => {
+    setPasswordPoints(validator.isStrongPassword(password, {
       minLength: 6,
       minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+      returnScore: true,
+      pointsPerUnique: 0,
+      pointsPerRepeat: 0,
+      pointsForContainingLower: 30,
+      pointsForContainingUpper: 50,
+      pointsForContainingNumber: 20,
+      pointsForContainingSymbol: 0
+    }));
+  }
+
+  const validatePasswordStrength = (password: string) => {
+    setHasLowerCase(validator.isStrongPassword(password, {
+      minLength: 0,
+      minLowercase: 1,
+      minUppercase: 0,
+      minNumbers: 0,
+      minSymbols: 0,
+    }));
+
+    setHasUpperCase(validator.isStrongPassword(password, {
+      minLength: 0,
+      minLowercase: 0,
+      minUppercase: 1,
+      minNumbers: 0,
+      minSymbols: 0,
+    }));
+
+    setHasNumbers(validator.isStrongPassword(password, {
+      minLength: 0,
+      minLowercase: 0,
       minUppercase: 0,
       minNumbers: 1,
       minSymbols: 0,
-      returnScore: false,
-    })) {
+    }));
+
+    setHasMinLength(validator.isStrongPassword(password, {
+      minLength: 6,
+      minLowercase: 0,
+      minUppercase: 0,
+      minNumbers: 0,
+      minSymbols: 0,
+    }));
+
+    if (hasLowerCase && hasUpperCase && hasNumbers && hasMinLength) {
       setIsStrongPassword(true);
     }
   }
@@ -91,7 +140,9 @@ export default function Home() {
           />
           <small className="ml-2 text-red-700">{!isEmail ? 'Invalid E-mail' : ''}</small>
 
-          <input className={`border-2 rounded-lg p-2 mb-2 ${!isStrongPassword ? 'focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500' : 'border-black'}`}
+          <input className={`border-2 rounded-lg p-2 mb-2 
+                            ${!isStrongPassword ? 'focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500' : 'border-black'}
+                          `}
             placeholder="Password"
             type="password"
             name="password"
@@ -100,8 +151,25 @@ export default function Home() {
             onChange={handleInput}
             required
           />
-          <small className="ml-2 text-red-700">{!isStrongPassword ? 'Invalid password' : ''}</small>
-          
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-slate-400">
+            <div className="bg-blue-600 h-2.5 rounded-full w-7" ></div>
+          </div>
+          <div className="flex flex-col  my-2 ">
+            <ul className="border-2 border-black rounded-md p-2">
+            <li>
+                <small className={`${!hasMinLength ? 'text-red-700' : 'text-green-700'}`}>Precisa ter no minímo 6 caracteres</small>
+              </li>
+              <li>
+                <small className={`${!hasNumbers ? 'text-red-700' : 'text-green-700'}`}>Precisa ter um número</small>
+              </li>
+              <li>
+                <small className={`${!hasUpperCase ? 'text-red-700' : 'text-green-700'}`}>Precisa ter uma letra maiúscula</small>
+              </li>
+              <li>
+                <small className={`${!hasLowerCase ? 'text-red-700' : 'text-green-700'}`}>Precisa ter uma letra minuscula</small>
+              </li>
+            </ul>
+          </div>
           <button className="bg-indigo-400 
                     text-white p-2
                     rounded-md shadow-sm 
