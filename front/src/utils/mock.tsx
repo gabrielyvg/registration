@@ -11,4 +11,8 @@ export const passwordGuidelines = [
     id: "lowerUpperCase",
     text: "Letra maiúscula e minúscula",
   },
+  {
+    id: "symbols",
+    text: "Símbolos (!@#$%^&*)",
+  },
 ]

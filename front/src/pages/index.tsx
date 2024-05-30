@@ -11,6 +11,7 @@ export default function Home() {
   const [hasUpperCase, setHasUpperCase] = useState(false);
   const [hasLowerCase, setHasLowerCase] = useState(false);
   const [hasNumbers, setHasNumbers] = useState(false);
+  const [hasSymbols, setHasSymbols] = useState(false);
   const [hasMinLength, setHasMinLength] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -53,14 +54,14 @@ export default function Home() {
       minLowercase: 1,
       minUppercase: 1,
       minNumbers: 1,
-      minSymbols: 0,
+      minSymbols: 1,
       returnScore: true,
       pointsPerUnique: 0,
       pointsPerRepeat: 0,
       pointsForContainingLower: 30,
-      pointsForContainingUpper: 50,
+      pointsForContainingUpper: 25,
       pointsForContainingNumber: 20,
-      pointsForContainingSymbol: 0
+      pointsForContainingSymbol: 25
     }));
   }
 
@@ -97,7 +98,15 @@ export default function Home() {
       minSymbols: 0,
     }));
 
-    if (hasLowerCase && hasUpperCase && hasNumbers && hasMinLength) {
+    setHasSymbols(validator.isStrongPassword(password, {
+      minLength: 0,
+      minLowercase: 0,
+      minUppercase: 0,
+      minNumbers: 0,
+      minSymbols: 1,
+    }));
+
+    if (hasLowerCase && hasUpperCase && hasNumbers && hasMinLength && hasSymbols) {
       setIsStrongPassword(true);
     }
   }
@@ -175,6 +184,7 @@ export default function Home() {
                 if (
                   (guidelines.id === 'minLength' && !hasMinLength) ||
                   (guidelines.id === 'numbers' && !hasNumbers) ||
+                  (guidelines.id === 'symbols' && !hasSymbols) ||
                   (guidelines.id === 'lowerUpperCase' && (!hasLowerCase || !hasUpperCase))
                 ) {
                   textColor = 'text-red-700';
