@@ -161,7 +161,10 @@ export default function Home() {
           </label>
 
           <div id='passwordBar' className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-slate-400">
-            <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: passwordPoints + '%' }}></div>
+            <div className={`${passwordPoints >= 70 ? 'bg-green-700' : passwordPoints >= 50 ? 'bg-yellow-500' : 'bg-red-700'} h-1.5 rounded-full`}
+              style={{ width: passwordPoints + '%' }}
+            >
+            </div>
           </div>
           <div id='passwordGuidelines' className="flex flex-col my-2 ">
             <ul className="border border-slate-500 rounded-md p-2">
