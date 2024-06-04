@@ -10,6 +10,11 @@ export default {
     
     await Queue.add({ user });
 
-    return res.json(user);
+    let response = {
+      status: true,
+      message: 'E-mail de confirmação enviado'
+    }
+
+    return res.json(response);
   }
 }
